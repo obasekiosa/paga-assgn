@@ -4,45 +4,59 @@ import com.example.pagaassgn.kgs.KGS;
 import com.example.pagaassgn.kgs.KeyCollisionException;
 import com.example.pagaassgn.pastebin.PastebinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Service
 public class AppServices {
 
     @Autowired
-    private static KGS kgs;
+    private KGS kgs;
 
     @Autowired
-    private static PastebinService pastebinService;
+    private PastebinService pastebinService;
 
-    private static final Logger LOGGER = Logger.getLogger(AppServices.class.getName());
+    private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 
-    public static int generateKeys(int numOfKeys) {
+    public int generateKeys(int availableMax) {
+        if (availableMax <= 0) return 0;
+
+        int numOfKeys = availableMax - kgs.getNumberOfInactiveKeys();
+
         if (numOfKeys <= 0 ) return  0;
 
         int collisionCount = 0;
         for (int i = 0; i < numOfKeys; i++) {
             try {
                 kgs.generateNewKey();
+
             } catch (KeyCollisionException e) {
-                System.out.println("Key collision occurred. Collision Count: " + (++collisionCount)); //Todo: switch to system logger
+                LOGGER.warning("Key collision occurred. Collision Count: " + (++collisionCount));
             } catch (Exception e) {
-                System.out.println("Unexpected error"); //Todo: switch to system logger
+                LOGGER.severe("Unexpected error");
             }
         }
 
-        return numOfKeys - collisionCount;
+        int numOfAddedKeys = numOfKeys - collisionCount;
+        LOGGER.info("Added " + numOfAddedKeys + " new key" + (numOfAddedKeys > 1 ? "s.": ".") );
+
+        return numOfAddedKeys;
     }
 
-    public static int removeExpiredBins() {
+    public int removeExpiredBins() {
         List<String> keys = pastebinService.deleteExpiredPasteBins();
         int reactivatedCount = kgs.batchActivateKeys(keys);
+
+        LOGGER.info("Removed " + keys.size() + " key" + (keys.size() > 1 ? "s.": "."));
+        LOGGER.info("Reactivated " + reactivatedCount + " key" + (reactivatedCount > 1 ? "s.": "."));
+
         if (keys.size() != reactivatedCount) {
-            LOGGER.log(Level.INFO, "Number of Re-Activated keys (" + keys.size() + ")" +
+            LOGGER.warning("Number of Re-Activated keys (" + keys.size() + ")" +
                     " is not the same as Number of deleted keys (" + reactivatedCount + ")");
         }
+
         return keys.size();
     }
 }
