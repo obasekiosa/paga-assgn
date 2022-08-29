@@ -8,7 +8,9 @@ import com.example.pagaassgn.kgs.KeyCollisionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -29,7 +31,7 @@ public class PastebinService {
     }
 
     public String getAnonymousBin(String id) {
-        Optional<Pastebin> binEntry = this.pastebinRepository.findById(id);
+        Optional<Pastebin> binEntry = this.pastebinRepository.findNonExpiredById(id, new Date()); // Todo: let database handle this.
         return binEntry.map(Pastebin::getContent).orElse(null);
     }
 
@@ -55,10 +57,11 @@ public class PastebinService {
         if (duration != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(bin.getCreatedOn());
-            calendar.add(Calendar.HOUR_OF_DAY, duration.intValue());
+            calendar.add(Calendar.HOUR_OF_DAY, duration);
 
             bin.setExpiry(calendar.getTime()); // Todo: have the database manage this calculation
             bin = pastebinRepository.save(bin);
+
         }
         return bin.getId();
     }
