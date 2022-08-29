@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class KGS {
@@ -91,6 +93,15 @@ public class KGS {
         }
 
         return null;
+    }
+
+
+    public int batchActivateKeys(List<String> keys) {
+        List<Key> keyEntries = keyRepository.findByIdIn(keys);
+        keyEntries.stream().forEach(key -> key.setActive(false));
+
+        keyRepository.saveAll(keyEntries);
+        return  keyEntries.size();
     }
 
 
