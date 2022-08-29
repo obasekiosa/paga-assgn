@@ -14,8 +14,8 @@ import java.util.UUID;
 public class KGS {
     private KeyRepository keyRepository;
 
-//    @Value("${kgs.key_length")
-    private Integer KEY_LENGTH = 6;
+
+    private int KEY_LENGTH = 6;
 
     @Autowired
     public KGS(KeyRepository keyRepository) {

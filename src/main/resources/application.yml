@@ -1,11 +1,12 @@
 
 
 kgs:
-  key_length: 6
+  key:
+    length: 6
 
 app:
   host: "localhost:8080"
 
   schedule:
     cron:
-      expired_bins: "* * * *"
+      expiredbins: "* * * *"
