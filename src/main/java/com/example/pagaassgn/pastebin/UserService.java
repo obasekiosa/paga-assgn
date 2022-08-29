@@ -14,15 +14,6 @@ public class UserService {
         this.credRepository = userCredRepository;
     }
 
-    private String generateSalt() {
-        throw new UnsupportedOperationException("This method has not been implemented");
-    }
-
-    private String hashPassword(String password) {
-        throw new UnsupportedOperationException("This method has not been implemented");
-    }
-
-
     public User addNewUser(String username, String password) {
         throw new UnsupportedOperationException("This method has not been implemented");
     }
