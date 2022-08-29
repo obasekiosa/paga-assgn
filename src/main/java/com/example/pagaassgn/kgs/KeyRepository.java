@@ -10,4 +10,6 @@ import java.util.List;
 public interface KeyRepository extends CrudRepository<Key, String> {
 
     List<Key> findByIdIn(List<String> ids);
+
+    List<Key> findAllByActive(boolean active);
 }
