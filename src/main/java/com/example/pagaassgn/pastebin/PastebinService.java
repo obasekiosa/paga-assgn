@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.xml.crypto.Data;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PastebinService {
@@ -67,7 +69,10 @@ public class PastebinService {
     }
 
 
-
+    public List<String> deleteExpiredPasteBins() {
+        return this.pastebinRepository.deleteExpiredBins(new Date())
+                .stream().map(Pastebin::getId).collect(Collectors.toList());
+    }
 
 
 }
