@@ -1,5 +1,3 @@
-
-
 kgs:
   key:
     length: 6
@@ -9,4 +7,8 @@ app:
 
   schedule:
     cron:
-      expired_bins: "* * * *"
+      expired_bins: "0 0 * * * *" # Every 1hr
+      generate_keys: "0 0 0,12 * * *" # every 12am/pm
+
+    config:
+      max_inactive_keys: 200
