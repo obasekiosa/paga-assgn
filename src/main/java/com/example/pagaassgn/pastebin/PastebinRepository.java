@@ -1,4 +1,8 @@
 package com.example.pagaassgn.pastebin;
 
-public interface PastebinRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PastebinRepository extends CrudRepository<Pastebin, String>{
 }

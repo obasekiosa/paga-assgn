@@ -1,7 +1,9 @@
-package com.example.pagaassgn.pastebin;
+package com.example.pagaassgn.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
 
     private UserRepository userRepository;
