@@ -9,4 +9,4 @@ app:
 
   schedule:
     cron:
-      expiredbins: "* * * *"
+      expired_bins: "* * * *"
