@@ -1,6 +1,5 @@
 package com.example.pagaassgn.pastebin;
 
-import com.example.pagaassgn.auth.UserRepository;
 import com.example.pagaassgn.auth.UserService;
 import com.example.pagaassgn.kgs.KGS;
 import com.example.pagaassgn.kgs.Key;
@@ -8,7 +7,6 @@ import com.example.pagaassgn.kgs.KeyCollisionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

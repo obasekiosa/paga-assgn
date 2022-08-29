@@ -10,13 +10,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class KGS {
     private KeyRepository keyRepository;
 
 
+    @Value("#{new Integer('${kgs.key.length:6}')}")
     private int KEY_LENGTH = 6;
 
     @Autowired
@@ -102,6 +102,10 @@ public class KGS {
 
         keyRepository.saveAll(keyEntries);
         return  keyEntries.size();
+    }
+
+    public int getNumberOfInactiveKeys() {
+        return keyRepository.findAllByActive(false).size();
     }
 
 
